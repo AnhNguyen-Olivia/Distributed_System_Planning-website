@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DMQ Project Plan — 4 Weeks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── TOKENS ─────────────────────────────────────────────── */
+  :root {
+    --bg:        #F7F6F3;
+    --surface:   #FFFFFF;
+    --surface2:  #F2F1EE;
+    --border:    #E4E3DF;
+    --border2:   #EDECE9;
+    --text-1:    #1A1917;
+    --text-2:    #5C5B57;
+    --text-3:    #9B9994;
+    --shadow:    0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --radius:    14px;
+    --radius-sm: 8px;
+    --radius-xs: 20px;
+    --accent:    #3D5AFE;
+    --accent-bg: #EEF1FF;
+    /* phase colors */
+    --ph1-bg:#F4F0E8; --ph1-fg:#5C4A1E; --ph1-dot:#C49A2A;
+    --ph2-bg:#EEF0FE; --ph2-fg:#2D3DB0; --ph2-dot:#3D5AFE;
+    --ph3-bg:#E8F5EF; --ph3-fg:#1B6B44; --ph3-dot:#2F9E68;
+    --ph4-bg:#FEF0E8; --ph4-fg:#9B3E0F; --ph4-dot:#E06929;
+    /* person chips */
+    --c-collab-bg:#F3F0E9; --c-collab-fg:#564828;
+    --c-p2-bg:#EEF0FE;     --c-p2-fg:#2D3DB0;
+    --c-p3-bg:#E8F5EF;     --c-p3-fg:#1B6B44;
+    --c-p4-bg:#FDE9E9;     --c-p4-fg:#9B2121;
+    --c-p5-bg:#FEF0E8;     --c-p5-fg:#9B3E0F;
+    --transition: .22s cubic-bezier(.4,0,.2,1);
+  }
+  [data-theme="dark"] {
+    --bg:        #121210;
+    --surface:   #1C1B18;
+    --surface2:  #252420;
+    --border:    #2E2D29;
+    --border2:   #242320;
+    --text-1:    #F0EEE9;
+    --text-2:    #A09E98;
+    --text-3:    #5E5C57;
+    --shadow:    0 1px 3px rgba(0,0,0,.3), 0 4px 20px rgba(0,0,0,.2);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.2);
+    --accent:    #697FFF;
+    --accent-bg: #1B1F42;
+    --ph1-bg:#28230F; --ph1-fg:#D4A94A; --ph1-dot:#C49A2A;
+    --ph2-bg:#141830; --ph2-fg:#8895FF; --ph2-dot:#697FFF;
+    --ph3-bg:#0E1F16; --ph3-fg:#4EB882; --ph3-dot:#2F9E68;
+    --ph4-bg:#281507; --ph4-fg:#E8875A; --ph4-dot:#E06929;
+    --c-collab-bg:#2A2416; --c-collab-fg:#C9A96E;
+    --c-p2-bg:#141830;     --c-p2-fg:#8895FF;
+    --c-p3-bg:#0E1F16;     --c-p3-fg:#4EB882;
+    --c-p4-bg:#2A0F0F;     --c-p4-fg:#E08080;
+    --c-p5-bg:#281507;     --c-p5-fg:#E8875A;
+  }
+
+  /* ── RESET ──────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── BASE ───────────────────────────────────────────────── */
+  html { font-size: 15px; }
+  body {
+    font-family: 'Sora', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.6;
+    min-height: 100vh;
+    transition: background var(--transition), color var(--transition);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── LAYOUT ─────────────────────────────────────────────── */
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* ── TOPBAR ─────────────────────────────────────────────── */
+  .topbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .project-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-1);
+    letter-spacing: -.02em;
+    line-height: 1.3;
+  }
+  .project-meta {
+    font-size: .78rem;
+    color: var(--text-3);
+    margin-top: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .01em;
+  }
+  .meta-dot { margin: 0 6px; opacity: .4; }
+
+  /* ── THEME TOGGLE ───────────────────────────────────────── */
+  .theme-btn {
+    flex-shrink: 0;
+    width: 44px; height: 26px;
+    border-radius: 13px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    position: relative;
+    transition: background var(--transition), border-color var(--transition);
+    outline: none;
+  }
+  .theme-btn:focus-visible { box-shadow: 0 0 0 3px var(--accent-bg); }
+  .theme-btn-knob {
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--text-2);
+    transition: transform var(--transition), background var(--transition);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+  [data-theme="dark"] .theme-btn-knob { transform: translateX(18px); background: var(--accent); }
+
+  /* ── LEGEND ─────────────────────────────────────────────── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-bottom: 28px;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+  .legend-label {
+    font-size: .7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-3);
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: .75rem;
+    color: var(--text-2);
+  }
+
+  /* ── WEEK TABS ──────────────────────────────────────────── */
+  .week-nav {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .week-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px 9px 14px;
+    border-radius: var(--radius-xs);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    font-size: .8rem;
+    font-weight: 500;
+    font-family: 'Sora', sans-serif;
+    cursor: pointer;
+    transition: all var(--transition);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .week-tab::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity .15s;
+  }
+  .week-tab:hover { color: var(--text-1); border-color: var(--text-3); }
+  .week-tab:hover::after { opacity: .04; }
+  .week-tab.active {
+    background: var(--text-1);
+    color: var(--bg);
+    border-color: var(--text-1);
+    box-shadow: var(--shadow);
+  }
+  [data-theme="dark"] .week-tab.active { color: var(--bg); }
+  .tab-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background var(--transition);
+  }
+  .week-tab.active .tab-dot { background: var(--bg) !important; }
+  .dot-ph1 { background: var(--ph1-dot); }
+  .dot-ph2 { background: var(--ph2-dot); }
+  .dot-ph3 { background: var(--ph3-dot); }
+  .dot-ph4 { background: var(--ph4-dot); }
+
+  /* ── PHASE CARD ─────────────────────────────────────────── */
+  .phase { display: none; }
+  .phase.active {
+    display: block;
+    animation: fadeSlide .3s ease forwards;
+  }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+  }
+
+  /* Phase header strip */
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px 18px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .phase-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 14px;
+    border-radius: var(--radius-xs);
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .ph1 { background: var(--ph1-bg); color: var(--ph1-fg); }
+  .ph2 { background: var(--ph2-bg); color: var(--ph2-fg); }
+  .ph3 { background: var(--ph3-bg); color: var(--ph3-fg); }
+  .ph4 { background: var(--ph4-bg); color: var(--ph4-fg); }
+
+  .phase-title-group { flex: 1; min-width: 180px; }
+  .phase-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-1);
+    letter-spacing: -.01em;
+  }
+  .phase-sub {
+    font-size: .75rem;
+    color: var(--text-3);
+    margin-top: 2px;
+  }
+  .deadline-badge {
+    margin-left: auto;
+    font-size: .7rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-3);
+    background: var(--surface2);
+    padding: 4px 11px;
+    border-radius: var(--radius-xs);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Progress bar */
+  .phase-progress {
+    padding: 0 24px 16px;
+    border-bottom: 1px solid var(--border2);
+  }
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .progress-label {
+    font-size: .68rem;
+    color: var(--text-3);
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    min-width: 60px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 1s cubic-bezier(.4,0,.2,1);
+  }
+  .fill-ph1 { background: var(--ph1-dot); }
+  .fill-ph2 { background: var(--ph2-dot); }
+  .fill-ph3 { background: var(--ph3-dot); }
+  .fill-ph4 { background: var(--ph4-dot); }
+  .progress-pct {
+    font-size: .68rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-3);
+    min-width: 30px;
+    text-align: right;
+  }
+
+  /* Diagram banner */
+  .diagram-banner {
+    display: flex;
+    gap: 12px;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border2);
+    background: var(--surface2);
+    font-size: .76rem;
+    color: var(--text-2);
+    line-height: 1.55;
+    align-items: flex-start;
+  }
+  .diagram-icon {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    margin-top: 1px;
+  }
+  .diagram-banner strong { color: var(--text-1); font-weight: 600; }
+
+  /* ── TABLE ──────────────────────────────────────────────── */
+  .task-table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .78rem;
+  }
+  thead th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: .65rem;
+    font-weight: 600;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border2);
+    transition: background .12s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody tr.collab-row { background: color-mix(in srgb, var(--surface2) 60%, transparent); }
+  tbody tr.collab-row:hover { background: var(--surface2); }
+  td {
+    padding: 13px 16px;
+    vertical-align: top;
+    color: var(--text-2);
+    line-height: 1.55;
+  }
+  td:first-child { min-width: 200px; }
+
+  /* task name */
+  .task-name {
+    font-weight: 600;
+    color: var(--text-1);
+    font-size: .8rem;
+    line-height: 1.4;
+  }
+  .task-sub {
+    font-size: .7rem;
+    color: var(--text-3);
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  /* person chips */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: var(--radius-xs);
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+    white-space: nowrap;
+  }
+  .p-collab { background: var(--c-collab-bg); color: var(--c-collab-fg); }
+  .p-p2     { background: var(--c-p2-bg);     color: var(--c-p2-fg); }
+  .p-p3     { background: var(--c-p3-bg);     color: var(--c-p3-fg); }
+  .p-p4     { background: var(--c-p4-bg);     color: var(--c-p4-fg); }
+  .p-p5     { background: var(--c-p5-bg);     color: var(--c-p5-fg); }
+
+  /* deliverables */
+  .dl-list { display: flex; flex-direction: column; gap: 4px; }
+  .dl-item {
+    display: flex;
+    gap: 7px;
+    font-size: .74rem;
+    color: var(--text-2);
+    line-height: 1.5;
+    align-items: flex-start;
+  }
+  .dl-item::before {
+    content: '·';
+    color: var(--text-3);
+    flex-shrink: 0;
+    font-size: .9em;
+    margin-top: .1em;
+  }
+
+  /* week tag */
+  .week-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .67rem;
+    color: var(--text-3);
+    white-space: nowrap;
+    padding: 3px 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  /* ── RESPONSIVE ─────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .page { padding: 20px 14px 60px; }
+    .project-title { font-size: 1rem; }
+    .week-tab { padding: 8px 14px 8px 11px; font-size: .75rem; }
+    .phase-header { padding: 16px 16px 14px; gap: 10px; }
+    td { padding: 10px 12px; }
+    thead th { padding: 8px 12px; }
+    .diagram-banner { padding: 12px 16px; }
+    .phase-progress { padding: 0 16px 14px; }
+    td:first-child { min-width: 150px; }
+    .topbar { flex-direction: row; align-items: flex-start; }
+  }
+
+  /* ── SCROLLBAR ──────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div>
+      <div class="project-title">Distributed Message Queue&thinsp;—&thinsp;4-Week Project Plan</div>
+      <div class="project-meta">
+        <span>5 members</span>
+        <span class="meta-dot">•</span>
+        <span>4 weeks</span>
+        <span class="meta-dot">•</span>
+        <span>1 phase / week</span>
+        <span class="meta-dot">•</span>
+        <span>Architecture diagram updated each phase</span>
+      </div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+      <div class="theme-btn-knob" id="themeIcon">☀</div>
+    </button>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-label">Team roles</div>
+    <div class="leg-item"><span class="chip p-collab">Collaborative</span> All 5 members</div>
+    <div class="leg-item"><span class="chip p-p2">Person 2</span> Broker &amp; Persistence</div>
+    <div class="leg-item"><span class="chip p-p3">Person 3</span> Replication &amp; Coordination</div>
+    <div class="leg-item"><span class="chip p-p4">Person 4</span> Producer SDK</div>
+    <div class="leg-item"><span class="chip p-p5">Person 5</span> Consumer SDK &amp; Ops</div>
+  </div>
+
+  <!-- WEEK NAV TABS -->
+  <nav class="week-nav" role="tablist">
+    <button class="week-tab active" onclick="showPhase(0)" role="tab" aria-selected="true">
+      <span class="tab-dot dot-ph1"></span> Week 1 — Foundation
+    </button>
+    <button class="week-tab" onclick="showPhase(1)" role="tab" aria-selected="false">
+      <span class="tab-dot dot-ph2"></span> Week 2 — Core Build
+    </button>
+    <button class="week-tab" onclick="showPhase(2)" role="tab" aria-selected="false">
+      <span class="tab-dot dot-ph3"></span> Week 3 — Integration
+    </button>
+    <button class="week-tab" onclick="showPhase(3)" role="tab" aria-selected="false">
+      <span class="tab-dot dot-ph4"></span> Week 4 — Demo &amp; Report
+    </button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- PHASE 1 -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="phase active" id="ph0">
+    <div class="phase-card">
+      <div class="phase-header">
+        <span class="phase-badge ph1">⚙ Phase 1</span>
+        <div class="phase-title-group">
+          <div class="phase-title">Foundation &amp; Setup</div>
+          <div class="phase-sub">Define interfaces, set up environments, draft initial architecture</div>
+        </div>
+        <div class="deadline-badge">⏱ End of Week 1</div>
+      </div>
+
+      <div class="phase-progress">
+        <div class="progress-row">
+          <span class="progress-label">Progress</span>
+          <div class="progress-track">
+            <div class="progress-fill fill-ph1" style="width:0%" data-target="20%"></div>
+          </div>
+          <span class="progress-pct">20%</span>
+        </div>
+      </div>
+
+      <div class="diagram-banner">
+        <div class="diagram-icon">🗺</div>
+        <div><strong>Shared diagram milestone:</strong> Create the first version of the system architecture diagram — broker cluster, topics, partitions, coordinator, and client layers. All members contribute to this draft.</div>
+      </div>
+
+      <div class="task-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:28%">Task</th>
+              <th style="width:15%">Assigned</th>
+              <th>Deliverables</th>
+              <th style="width:9%">Due</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="collab-row">
+              <td>
+                <div class="task-name">Define system architecture (v1)</div>
+                <div class="task-sub">Collaborative — all attend this session</div>
+              </td>
+              <td><span class="chip p-collab">Collaborative</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Architecture diagram v1 (shared doc)</div>
+                  <div class="dl-item">Agreed message format: topic, partition, offset, key, value, timestamp</div>
+                  <div class="dl-item">Network protocol spec: port numbers, request/response framing</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 1</span></td>
+            </tr>
+            <tr class="collab-row">
+              <td>
+                <div class="task-name">Set up shared repository</div>
+                <div class="task-sub">Collaborative — all members</div>
+              </td>
+              <td><span class="chip p-collab">Collaborative</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Git repository with agreed folder structure</div>
+                  <div class="dl-item">README with setup instructions</div>
+                  <div class="dl-item">Branch strategy agreed (e.g., feature branches → main)</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 1</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Broker node skeleton</div>
+                <div class="task-sub">TCP server, partition map, basic config</div>
+              </td>
+              <td><span class="chip p-p2">Person 2</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Runnable broker process on configurable port</div>
+                  <div class="dl-item">Partition directory structure created on startup</div>
+                  <div class="dl-item">Config file: broker ID, data directory, port</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 1</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Coordinator environment setup</div>
+                <div class="task-sub">Install etcd/ZooKeeper, test cluster boot</div>
+              </td>
+              <td><span class="chip p-p3">Person 3</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">etcd or ZooKeeper cluster running locally (3 nodes)</div>
+                  <div class="dl-item">Key schema defined: /brokers/{id}, /topics/{name}/partitions</div>
+                  <div class="dl-item">Setup guide documented</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 1</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Producer client skeleton</div>
+                <div class="task-sub">Basic TCP connection, message serialisation</div>
+              </td>
+              <td><span class="chip p-p4">Person 4</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Producer class connecting to a broker address</div>
+                  <div class="dl-item">send(topic, key, value) method stub</div>
+                  <div class="dl-item">Message serialisation format (binary or JSON)</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 1</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Consumer client skeleton + dev tooling</div>
+                <div class="task-sub">Client stub, testing framework, CI setup</div>
+              </td>
+              <td><span class="chip p-p5">Person 5</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Consumer class with poll() stub</div>
+                  <div class="dl-item">Unit test framework configured (pytest / JUnit)</div>
+                  <div class="dl-item">GitHub Actions or equivalent CI pipeline running tests</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 1</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- PHASE 2 -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="phase" id="ph1">
+    <div class="phase-card">
+      <div class="phase-header">
+        <span class="phase-badge ph2">🔧 Phase 2</span>
+        <div class="phase-title-group">
+          <div class="phase-title">Core Implementation</div>
+          <div class="phase-sub">Build the main features independently, run first integration check</div>
+        </div>
+        <div class="deadline-badge">⏱ End of Week 2</div>
+      </div>
+
+      <div class="phase-progress">
+        <div class="progress-row">
+          <span class="progress-label">Progress</span>
+          <div class="progress-track">
+            <div class="progress-fill fill-ph2" style="width:0%" data-target="40%"></div>
+          </div>
+          <span class="progress-pct">40%</span>
+        </div>
+      </div>
+
+      <div class="diagram-banner">
+        <div class="diagram-icon">🗺</div>
+        <div><strong>Shared diagram milestone:</strong> Update the architecture diagram with implementation-level details — add the append-only log structure, ISR replication flow, and client-broker interaction. All members review and annotate.</div>
+      </div>
+
+      <div class="task-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:28%">Task</th>
+              <th style="width:15%">Assigned</th>
+              <th>Deliverables</th>
+              <th style="width:9%">Due</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="collab-row">
+              <td>
+                <div class="task-name">Mid-point integration check</div>
+                <div class="task-sub">Collaborative — all attend this session</div>
+              </td>
+              <td><span class="chip p-collab">Collaborative</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Producer successfully sends one message to broker</div>
+                  <div class="dl-item">Broker writes message to disk (even if log format is rough)</div>
+                  <div class="dl-item">Issues log updated with blockers per person</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 2</span></td>
+            </tr>
+            <tr class="collab-row">
+              <td>
+                <div class="task-name">Update architecture diagram (v2)</div>
+                <div class="task-sub">Collaborative — all members</div>
+              </td>
+              <td><span class="chip p-collab">Collaborative</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Architecture diagram updated with log and replication detail</div>
+                  <div class="dl-item">Shared in repository under /docs</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 2</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Append-only log implementation</div>
+                <div class="task-sub">Segment files (.log + .index) on disk</div>
+              </td>
+              <td><span class="chip p-p2">Person 2</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Messages appended to .log binary file per partition</div>
+                  <div class="dl-item">Sparse .index file mapping offset → byte position</div>
+                  <div class="dl-item">Read-by-offset working: given offset N, return message</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 2</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Leader-follower replication protocol</div>
+                <div class="task-sub">Followers pull from leader, ISR list</div>
+              </td>
+              <td><span class="chip p-p3">Person 3</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Follower broker fetches new log entries from leader</div>
+                  <div class="dl-item">ISR (In-Sync Replica) list maintained in etcd</div>
+                  <div class="dl-item">High-watermark updated when all ISR members confirm</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 2</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Producer with partitioning logic</div>
+                <div class="task-sub">hash(key) → partition, retry on failure</div>
+              </td>
+              <td><span class="chip p-p4">Person 4</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">hash(key) % num_partitions routing working</div>
+                  <div class="dl-item">Producer queries coordinator for partition leader address</div>
+                  <div class="dl-item">Retry with backoff on broker connection failure</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 2</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Consumer with offset tracking</div>
+                <div class="task-sub">poll() loop, commit offset after consume</div>
+              </td>
+              <td><span class="chip p-p5">Person 5</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Consumer polls broker from a stored offset</div>
+                  <div class="dl-item">commit(offset) stores progress to etcd/coordinator</div>
+                  <div class="dl-item">Consumer resumes from correct offset after restart</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 2</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- PHASE 3 -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="phase" id="ph2">
+    <div class="phase-card">
+      <div class="phase-header">
+        <span class="phase-badge ph3">🔗 Phase 3</span>
+        <div class="phase-title-group">
+          <div class="phase-title">Integration, Fault Tolerance &amp; Scalability</div>
+          <div class="phase-sub">Connect all modules, demonstrate DS characteristics, finalise design diagram</div>
+        </div>
+        <div class="deadline-badge">⏱ End of Week 3</div>
+      </div>
+
+      <div class="phase-progress">
+        <div class="progress-row">
+          <span class="progress-label">Progress</span>
+          <div class="progress-track">
+            <div class="progress-fill fill-ph3" style="width:0%" data-target="75%"></div>
+          </div>
+          <span class="progress-pct">75%</span>
+        </div>
+      </div>
+
+      <div class="diagram-banner">
+        <div class="diagram-icon">🗺</div>
+        <div><strong>Shared diagram milestone:</strong> Finalise the architecture diagram (v3) — this is the diagram that appears in the report. Add fault tolerance paths (failover arrows), consumer group rebalancing, and scalability notes. All members sign off.</div>
+      </div>
+
+      <div class="task-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:28%">Task</th>
+              <th style="width:15%">Assigned</th>
+              <th>Deliverables</th>
+              <th style="width:9%">Due</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="collab-row">
+              <td>
+                <div class="task-name">Full system integration test</div>
+                <div class="task-sub">Collaborative — all attend this session</div>
+              </td>
+              <td><span class="chip p-collab">Collaborative</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">End-to-end: Producer → Broker → Disk → Consumer working</div>
+                  <div class="dl-item">Messages survive broker restart (persistence verified)</div>
+                  <div class="dl-item">Bug list captured and assigned</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 3</span></td>
+            </tr>
+            <tr class="collab-row">
+              <td>
+                <div class="task-name">Finalise architecture diagram (v3 — report version)</div>
+                <div class="task-sub">Collaborative — all members</div>
+              </td>
+              <td><span class="chip p-collab">Collaborative</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Final diagram with fault tolerance and scalability paths shown</div>
+                  <div class="dl-item">Exported as PNG/PDF for inclusion in report</div>
+                  <div class="dl-item">All members have reviewed and approved</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 3</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Broker API polish + log segment pruning</div>
+                <div class="task-sub">Segment rotation, old log cleanup</div>
+              </td>
+              <td><span class="chip p-p2">Person 2</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">New log segment created when size exceeds threshold</div>
+                  <div class="dl-item">Old segments pruned by configurable retention policy</div>
+                  <div class="dl-item">Broker API fully tested with integration test suite</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 3</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Leader election + automatic failover</div>
+                <div class="task-sub">Broker crash → new leader elected</div>
+              </td>
+              <td><span class="chip p-p3">Person 3</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Broker crash detected via etcd session expiry</div>
+                  <div class="dl-item">New leader elected from ISR list automatically</div>
+                  <div class="dl-item">Configurable acks=1 and acks=all modes working</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 3</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Consumer group + partition rebalancing</div>
+                <div class="task-sub">Join/leave group, reassign partitions</div>
+              </td>
+              <td><span class="chip p-p4">Person 4</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Consumer group membership tracked in coordinator</div>
+                  <div class="dl-item">Partitions reassigned when consumer joins or leaves</div>
+                  <div class="dl-item">No duplicate messages during rebalance</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 3</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Throughput benchmark + scalability test</div>
+                <div class="task-sub">Messages/sec at 1, 2, 3 broker nodes</div>
+              </td>
+              <td><span class="chip p-p5">Person 5</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Benchmark script: N producers sending M messages</div>
+                  <div class="dl-item">Throughput results recorded for 1, 2, 3 brokers</div>
+                  <div class="dl-item">Chart/table showing horizontal scalability trend</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 3</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- PHASE 4 -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="phase" id="ph3">
+    <div class="phase-card">
+      <div class="phase-header">
+        <span class="phase-badge ph4">🎯 Phase 4</span>
+        <div class="phase-title-group">
+          <div class="phase-title">Presentation, Demo &amp; Report</div>
+          <div class="phase-sub">Polish, rehearse the 30-minute live demo, write and submit the final report</div>
+        </div>
+        <div class="deadline-badge">⏱ End of Week 4</div>
+      </div>
+
+      <div class="phase-progress">
+        <div class="progress-row">
+          <span class="progress-label">Progress</span>
+          <div class="progress-track">
+            <div class="progress-fill fill-ph4" style="width:0%" data-target="100%"></div>
+          </div>
+          <span class="progress-pct">100%</span>
+        </div>
+      </div>
+
+      <div class="diagram-banner">
+        <div class="diagram-icon">🗺</div>
+        <div><strong>Shared diagram milestone:</strong> All members review the final diagram one last time before submission. Ensure it matches what was demoed live. Include as a full-page figure in the project report.</div>
+      </div>
+
+      <div class="task-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:28%">Task</th>
+              <th style="width:15%">Assigned</th>
+              <th>Deliverables</th>
+              <th style="width:9%">Due</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="collab-row">
+              <td>
+                <div class="task-name">Demo rehearsal (full 30-min run-through)</div>
+                <div class="task-sub">Collaborative — all attend this session</div>
+              </td>
+              <td><span class="chip p-collab">Collaborative</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Full 30-min demo rehearsed with time per slot confirmed</div>
+                  <div class="dl-item">Fault tolerance demo (kill a broker live) tested and stable</div>
+                  <div class="dl-item">Each member knows their speaking segment</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 4</span></td>
+            </tr>
+            <tr class="collab-row">
+              <td>
+                <div class="task-name">Write project report (all sections)</div>
+                <div class="task-sub">Collaborative — each writes their module section</div>
+              </td>
+              <td><span class="chip p-collab">Collaborative</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Report sections: Problem Statement, Architecture, Functionality, Fault Tolerance, Scalability, Conclusion</div>
+                  <div class="dl-item">Final diagram included as figure</div>
+                  <div class="dl-item">Person 1 (lead) edits for consistency and submits</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 4</span></td>
+            </tr>
+            <tr class="collab-row">
+              <td>
+                <div class="task-name">Final architecture diagram review (v4 — submission)</div>
+                <div class="task-sub">Collaborative — all members</div>
+              </td>
+              <td><span class="chip p-collab">Collaborative</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Diagram matches the live demo system exactly</div>
+                  <div class="dl-item">Added to report and slide deck</div>
+                  <div class="dl-item">Source file committed to repository</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 4</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Persistence layer final polish + demo data</div>
+                <div class="task-sub">Pre-seed log files for live demo</div>
+              </td>
+              <td><span class="chip p-p2">Person 2</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Broker restarts cleanly, recovers all messages from disk</div>
+                  <div class="dl-item">Pre-seeded demo dataset ready (e.g., 10k order messages)</div>
+                  <div class="dl-item">Persistence section written for the report</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 4</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Fault tolerance final test + report section</div>
+                <div class="task-sub">Document all failure scenarios</div>
+              </td>
+              <td><span class="chip p-p3">Person 3</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Broker kill demo rehearsed: leader switches within &lt;5s</div>
+                  <div class="dl-item">Network partition scenario documented</div>
+                  <div class="dl-item">Fault tolerance section written for the report</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 4</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">SDK demo script + consumer group demo</div>
+                <div class="task-sub">Add consumer live during demo</div>
+              </td>
+              <td><span class="chip p-p4">Person 4</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Live demo: add a 2nd consumer, show partition rebalancing</div>
+                  <div class="dl-item">Client SDK usage example in the report</div>
+                  <div class="dl-item">Demo commands documented in a cheat sheet</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 4</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="task-name">Slides + scalability chart + submission package</div>
+                <div class="task-sub">Final presentation deck and source zip</div>
+              </td>
+              <td><span class="chip p-p5">Person 5</span></td>
+              <td>
+                <div class="dl-list">
+                  <div class="dl-item">Presentation slides (Problem → Architecture → Demo → Q&amp;A guide)</div>
+                  <div class="dl-item">Scalability chart (throughput vs broker count) in slides</div>
+                  <div class="dl-item">Final submission zip: report + source + supporting files</div>
+                </div>
+              </td>
+              <td><span class="week-tag">Week 4</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+  /* ── PHASE SWITCHING ──────────────────────────────────── */
+  function showPhase(i) {
+    document.querySelectorAll('.phase').forEach((p, j) => p.classList.toggle('active', i === j));
+    const tabs = document.querySelectorAll('.week-tab');
+    tabs.forEach((t, j) => {
+      t.classList.toggle('active', i === j);
+      t.setAttribute('aria-selected', i === j ? 'true' : 'false');
+    });
+    // Animate progress fill on the newly visible phase
+    animateFills();
+  }
+
+  /* ── PROGRESS BARS ────────────────────────────────────── */
+  function animateFills() {
+    // Small delay lets the phase fade-in start first
+    setTimeout(() => {
+      document.querySelectorAll('.phase.active .progress-fill').forEach(el => {
+        el.style.width = el.dataset.target;
+      });
+    }, 80);
+  }
+
+  /* ── DARK MODE ────────────────────────────────────────── */
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('themeIcon').textContent = isDark ? '☀' : '☽';
+    localStorage.setItem('dmq-theme', isDark ? 'light' : 'dark');
+  }
+
+  /* ── INIT ─────────────────────────────────────────────── */
+  (function init() {
+    const saved = localStorage.getItem('dmq-theme');
+    if (saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.getElementById('themeIcon').textContent = '☽';
+    }
+    animateFills();
+  })();
+</script>
+</body>
+</html>
